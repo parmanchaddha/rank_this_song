@@ -1,0 +1,29 @@
+.submit-cancel {
+  position: fixed;
+  margin-top: 10vh;
+  width: 100%
+}
+.submit{
+  display: block;
+  float: right;
+  padding-right: 10vw;
+  width: 10vw;
+}
+.cancel{
+  display: block;
+  float:left;
+  padding-left: 10vw;
+  width: 10vw;
+}
+.submit-cancel form{
+  width: 100%
+}
+
+.submit-cancel button{
+  width: 100%;
+  padding: 10px;
+  border-radius: 20px;
+}
+.submit button{
+  background-color: green;
+}
