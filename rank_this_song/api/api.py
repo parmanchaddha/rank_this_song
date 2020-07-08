@@ -42,4 +42,5 @@ def get_songs_by_band():
     songs = [i.replace('"', "") for i in songs]
     return jsonify({"songs": songs})
 
-app.run()
+if __name__ == "__main__":
+    app.run()

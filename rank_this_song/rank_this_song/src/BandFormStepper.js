@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -118,12 +118,29 @@ function getSteps() {
   return ['Choose A Band', 'Song FIGHT', 'And the loudest tune is...'];
 }
 
-function getStepContent(step) {
-  switch (step) {
+function StepContent(props) {
+  const [band_name, setBandName] = React.useState("");
+  const [song_list, setSongList] = React.useState([]);
+
+  function updateSongsList (songs_list, artist) {
+    console.log(songs_list)
+    setBandName(artist)
+    setSongList(songs_list);
+    props.next(true);
+  }
+
+  switch (props.active_step) {
     case 0:
-      return <BandNameInput />;
+      return (
+        <BandNameInput 
+          band_name = {band_name}
+          sendSongs = {(songs_list, artist) => updateSongsList(songs_list, artist)}
+        />
+      )
     case 1:
-      return 'Song FIGHT';
+      return (
+        song_list
+      )
     case 2:
       return 'And the loudest tune is...';
     case 3: 
@@ -135,7 +152,7 @@ function getStepContent(step) {
 
 export default function CustomizedSteppers() {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
   const handleNext = () => {
@@ -166,7 +183,10 @@ export default function CustomizedSteppers() {
       <div>
         <div>
           <Typography className={classes.instructions}>
-            {getStepContent(activeStep)}
+            <StepContent 
+              active_step =  {activeStep}
+              next = {() => handleNext()}
+            />
           </Typography>
           <SubmitCancelBar 
             active_step = {activeStep}
