@@ -12,11 +12,14 @@ Requires:
     wikipedia (pip install wikipedia)
     spotipy (pip install spotipy)
 """
+import pandas as pd
+import re
 
 import wikipedia
 import spotipy
-import pandas as pd
 from credentials import APP_CLIENT
+
+SONG_PAGE_PATTERN = "List_of_songs_recorded_by"
 
 class CreateWikipediaConnection(object):
     """ 
@@ -44,13 +47,44 @@ class CreateWikipediaConnection(object):
     """
     def __init__(self, band_name:str = None, num_of_tracks:int=16):
         """ Use Wikipedia to search for songs. """
-        self.page_content = self._fetch_data_from_wikipedia(band_name)
-        self.songs_df = self._parse_songs_from_html(self.page_content)
+        self.band_name = band_name
+        self.num_of_tracks = num_of_tracks
+        self.does_song_page_exist = self._get_song_page_exist(band_name)
+        if self.does_song_page_exist:
+            self.song_page_content = self._fetch_data_from_wikipedia(band_name)
+            self.songs_df = self._parse_songs_from_html(self.song_page_content)
+        else:
+            self.song_page_content = None
+            self.songs_df = pd.DataFrame(data=[], columns=["artist", "tracks"])
+        return
+
+    def _get_song_page_exist(self, band_name:str=None): 
+        """
+        Function: 
+            Check to see if `Songs Recorded by Band_Name` exists on Wikipedia
+            If it does, YAY! This makes it much easier to pull data.
         
-    def _fetch_data_from_wikipedia(self, band_name:str = None):    
-        """ Fetch data from a wikipedia page based on a band name """
+        Return:
+            does_song_page_exist (bool): Does the page exist? 
+        """
         if not band_name:
             raise Exception("Please enter a band name!")
+
+        try:
+            check_page_url = wikipedia.page(f"List of Songs recorded by {band_name}").url
+            if (SONG_PAGE_PATTERN in check_page_url 
+                and (band_name.lower() in check_page_url.lower()
+                     or band_name.replace(" ", "_").lower() in check_page_url.lower())):    
+                does_song_page_exist = True
+            else:
+                does_song_page_exist = False
+        except wikipedia.PageError as e:
+            does_song_page_exist = False
+        return does_song_page_exist
+
+
+    def _fetch_data_from_wikipedia(self, band_name:str = None):    
+        """ Fetch data from a wikipedia page based on a band name """
         songs_page = wikipedia.page(f"List of Songs recorded by {band_name}")
         page_content = songs_page.html()
         return page_content
@@ -73,8 +107,7 @@ class CreateWikipediaConnection(object):
                 str(i).lower() in ["title", "song", "name"])][0]
         songs = self.songs_df[songs_col].astype(str).tolist()
         return songs
-    
-    
+
 
 class CreateSpotfiyConnection(object):
     """ 
@@ -124,8 +157,10 @@ class CreateSpotfiyConnection(object):
     
 if __name__ == "__main__":
 
-    songs_wiki = CreateWikipediaConnection("The Beatles", num_of_tracks=16)
-    wiki_songs = songs_wiki.get_songs()
-    
-    spotify_connection = CreateSpotfiyConnection()
-    spotify_songs = spotify_connection.get_tracks_by_band("Strokes", 16) 
+#    songs_wiki = CreateWikipediaConnection("Beatles", num_of_tracks=16)
+    # wiki_songs = songs_wiki.get_songs()   
+    for i in ["Beatles", "the beatles", "The Beatles", "hte beatles", "Arctic Monkeys", "The Strokes"]:
+        song_page = CreateWikipediaConnection(i)
+        print(len(song_page.get_songs()))
+    # spotify_connection = CreateSpotfiyConnection()
+    # spotify_songs = spotify_connection.get_tracks_by_band("Strokes", 16) 
