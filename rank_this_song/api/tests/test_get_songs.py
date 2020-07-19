@@ -13,7 +13,7 @@ from get_songs import CreateWikipediaConnection
 @pytest.mark.parametrize("inputs, expected", [
         (["Beatles", 16], True),
         (["Arctic Monkeys", 8], True), 
-        (["The Strokes", 8], False),
+        (["The Strokes", 8], True),
     ])
 def test_band_and_numtracks(inputs, expected):
     """ Make sure band name and num of songs are correct""" 

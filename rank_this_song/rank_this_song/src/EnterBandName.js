@@ -15,7 +15,8 @@ const wikipediaLoadingMessage = () => {
 }
 
 async function getSongsByBand(band_name) {
-  let URL = `http://localhost:5000/get_songs_by_band?band_name=${band_name}/`;
+  band_name = band_name.replace(" ", "_");
+  let URL = `http://localhost:5000/get_songs_by_band?artist_name=${band_name}`;
   let fetchURL = await fetch(URL);
   let response = await fetchURL;
   let results = await response.json();
