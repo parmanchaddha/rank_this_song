@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import './song_shit.css';
 import RankThisSong from './RankThisSong';
 import * as serviceWorker from './serviceWorker';
 
