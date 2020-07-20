@@ -27,16 +27,16 @@ def api_home():
 def get_songs_by_band():
     """ Send a list of songs based on the band name."""
 
-    if "band_name" not in request.args: 
-        return(jsonify([{"error": "Bad Request, must include band_name",
+    if "artist_name" not in request.args: 
+        return(jsonify([{"error": "Bad Request, must include artist_name",
                         "code": 400}]))
-    band_name = request.args["band_name"]
+    artist_name = request.args["artist_name"]
 
     num_of_tracks = 16
     if "num_of_tracks" in request.args and general._isint(request.args["num_of_tracks"]):
         num_of_tracks = int(request.args["num_of_tracks"])
 
-    band_wiki = get_songs.CreateWikipediaConnection(band_name=band_name,
+    band_wiki = get_songs.CreateWikipediaConnection(artist_name=artist_name,
                                                     num_of_tracks=num_of_tracks)
     songs = band_wiki.get_songs()
     songs = [i.replace('"', "") for i in songs]
