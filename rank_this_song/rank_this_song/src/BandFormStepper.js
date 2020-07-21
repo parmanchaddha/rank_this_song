@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 
 import BandNameInput from "./EnterBandName";
 import SubmitCancelBar from "./SubmitCancelBar";
+import {songfunc} from "./song_shit.js"
 
 const ColorlibConnector = withStyles({
   alternativeLabel: {
@@ -118,7 +119,7 @@ function getSteps() {
   return ['Choose A Band', 'Song FIGHT', 'And the loudest tune is...'];
 }
 
-function StepContent(props) {
+  export function StepContent(props) {
   const [band_name, setBandName] = React.useState("");
   const [song_list, setSongList] = React.useState([]);
 
@@ -127,6 +128,7 @@ function StepContent(props) {
     setBandName(artist)
     setSongList(songs_list);
     props.next(true);
+    return (songs_list)
   }
 
   switch (props.active_step) {
@@ -139,7 +141,7 @@ function StepContent(props) {
       )
     case 1:
       return (
-        song_list
+         songfunc(song_list)
       )
     case 2:
       return 'And the loudest tune is...';
@@ -150,7 +152,7 @@ function StepContent(props) {
   }
 }
 
-export default function CustomizedSteppers() {
+export function CustomizedSteppers() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();

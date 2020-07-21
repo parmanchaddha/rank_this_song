@@ -1,0 +1,25 @@
+.container2{
+    position: absolute;
+    left: 80vh;
+    top: 80vh;
+  }
+  .container3 {
+    position: absolute;
+    left: 140vh;
+    top: 90vh;
+  }
+
+  .container4 {
+      position: absolute;
+      left: 200vh;
+      top: 95vh;
+  }
+
+  .container5 {
+      position: absolute;
+      left: 90vh;
+      top: 50vh;
+      width: 200px;
+      height: 20px;
+  }
+  

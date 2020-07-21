@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import BandFormStepper from "./BandFormStepper";
+import {CustomizedSteppers} from "./BandFormStepper";
 import './RankThisSong.css';
 
 function RankThisSong() {
@@ -10,7 +10,7 @@ function RankThisSong() {
       </header>
 
       <div>
-        <BandFormStepper />
+        <CustomizedSteppers />
       </div>
     </div>
   );
